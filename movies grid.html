@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container {
+            width: 87%;
+            height: auto;
+            display: grid;
+            border: 1px solid black;
+            margin-top: 100px;
+            margin-left: 100px;
+            grid-template-columns: repeat(3,280px);
+            grid-template-rows: auto;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+   
+    <form action="" id="form">
+        <input type="text" placeholder="Name" id="name">
+        <input type="date" placeholder="Release date" id="date">
+        <input type="text" placeholder="Poster URL" id="url">
+        <input type="text" placeholder="IMDB rating" id="rating">
+        <input type="submit" >
+    </form>
+    <select name="Sort by Rating" id="sort">
+        <option value="">--Sort by Rating--</option>
+        <option value="High to low" onchange="funcH2L()">High to low</option>
+        <option value="Low to High">Low to High</option>
+    </select>
+     <div id="container">
+        
+     </div>
+</body>
+</html>
+<script>
+
+    let form = document.querySelector("#form")
+    form.addEventListener("submit",createCard)
+
+    let arrMovieLS = JSON.parse(localStorage.getItem("movieDetails")) || []
+    
+
+function createCard(){
+    event.preventDefault();
+
+    let container = document.querySelector("#container")
+
+    let card = document.createElement("div")
+    card.style="height:420px; width:300px; border:1px solid black"
+
+    let movieValues = {
+        name : document.querySelector("#name").value,
+        date : document.querySelector("#date").value,
+        rating : document.querySelector("#rating").value,
+        url : document.querySelector("#url").value,
+    }
+
+    container.append(card)
+
+    let imgcard = document.createElement("div")
+    imgcard.style="width:100%; height:75%; border:1px solid black"
+    card.append(imgcard)
+
+
+
+    let img = document.createElement("img")
+    img.src=movieValues.url
+    img.style="width:100%; height:100%"
+    imgcard.append(img)
+
+
+    let nameH = document.createElement("h3")
+    nameH.innerText="Movie name :"+ movieValues.name
+    card.append(nameH)
+    
+    let date = document.createElement("h4")
+    date.innerText="Release date :"+ movieValues.date
+    card.append(date)
+
+    let rating = document.createElement("h4")
+    rating.innerText="Imdb rating :"+ movieValues.rating
+    rating.style="margin-top:-20px"
+    card.append(rating)
+
+    arrMovieLS.push(movieValues)
+    
+    localStorage.setItem("movieDetails",JSON.stringify(arrMovieLS))
+}
+
+
+
+
+
+
+retrieveData ()
+
+function retrieveData() {
+//   event.preventDefault();
+
+  let arrMovieLS = JSON.parse(localStorage.getItem("movieDetails")) 
+
+   
+
+   for (var i=0; i<arrMovieLS.length; i++){
+
+    // if (arrMovieLS[i].rating)
+
+    let imgcard = document.createElement("div")
+    imgcard.style="width:100%; height:75%; border:1px solid black"
+
+    let card = document.createElement("div")
+    card.style="height:420px; width:300px; border:1px solid black; margin-top: 50px"
+
+
+    let img = document.createElement("img")
+    img.style="width:100%; height:100%"
+    img.src=arrMovieLS[i].url
+    imgcard.append(img)
+
+
+    let date = document.createElement("h4")
+    date.innerText="Release date :" + arrMovieLS[i].date
+
+
+    let nameH = document.createElement("h3")
+    nameH.innerText="Movie name :" + arrMovieLS[i].name
+
+    let rating = document.createElement("h4")
+    rating.innerText="Imdb rating :" + arrMovieLS[i].rating
+    rating.style="margin-top:-20px"
+
+    card.append(imgcard,date,nameH,rating)
+
+    let container = document.querySelector("#container")
+
+    container.append(card)
+
+    
+   }
+
+let sorting = document.querySelector("#sort")
+
+sorting.onchange = sortingFunc;
+
+function sortingFunc(){
+    if (this.value=="--Sort by Rating--"){
+        
+    }
+}
+}
+</script>
